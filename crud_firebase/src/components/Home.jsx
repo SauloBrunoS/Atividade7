@@ -27,10 +27,10 @@ function Home(props) {
         setValidate({login:'', password:''})
         
         if(login==='' || password === ''){
-            props.setToast({header:'Erro!', body:'Preencha todos os campos.'})
+            res = false
+            props.setToast({header:'Atenção!', body:'Preencha todos os campos.', bg:'warning'})
             props.setShowToast(true)
             setLoading(false)
-            res = false
             let validateObj = {login:'', password:''}
             if(login === '') validateObj.login = 'is-invalid'
             if(password == '') validateObj.password = 'is-invalid'
@@ -53,12 +53,12 @@ function Home(props) {
                     setLoading(false)
                     props.firebase.setUser(user)
                     props.setLogged(true)
-                    props.setToast({header:'Logado!',body:'Logado com sucesso.'})
+                    props.setToast({header:'Logado!',body:'Logado com sucesso.', bg:'success'})
                     props.setShowToast(true)
                     navigate('/listStudent')
                 } else {
                     setLoading(false)
-                    props.setToast({header:'Erro!',body:'Login e/ou Senha incorreto(s).'})
+                    props.setToast({header:'Erro!',body:'Login e/ou Senha incorreto(s).', bg:'danger'})
                     props.setShowToast(true)
                 }
             }

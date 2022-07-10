@@ -28,10 +28,8 @@ const AppPage = () =>
 function App(props) {
 
   const [logged, setLogged] = useState(false)
-  const [verified, setVerified] = useState(false)
-
   const [showToast, setShowToast] = useState(false)
-  const [toast, setToast] = useState({header:'', body: ''})
+  const [toast, setToast] = useState({header:'', body: '', bg:'secondary'})
 
   const navigate = useNavigate()
 
@@ -49,7 +47,7 @@ function App(props) {
   }
 
   const renderLoginButtonLogout = () => {
-    if(props.firebase.getUser() != null)
+    if(props.firebase.getUser() != null && props.firebase.getUser().emailVerified)
         return (
           <div style = {{marginRight:20}}>
           Olá, {props.firebase.getUser().email}
@@ -60,13 +58,12 @@ function App(props) {
   }
 
   const renderToast = () => {
-    return <MyToast show = {showToast} header={toast.header} body = {toast.body} setShowToast={setShowToast} bg = 'secondary'/>
+    return <MyToast show = {showToast} header={toast.header} body = {toast.body} setShowToast={setShowToast} bg = {toast.bg}/>
   }
 
   
   return (
     <div className="container">
-      
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <Link to={"/"} className="navbar-brand" style={{ paddingLeft: 10 }}>CRUD</Link>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
@@ -105,8 +102,8 @@ function App(props) {
             </li>
           </ul>
         </div>
-        {renderToast()}
         {renderLoginButtonLogout()}
+        {renderToast()}
       </nav>
       <Routes>
         <Route path="/" element={<Home setLogged={setLogged} setShowToast={setShowToast} setToast={setToast}/>} />

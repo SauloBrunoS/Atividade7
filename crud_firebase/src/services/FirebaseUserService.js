@@ -3,6 +3,21 @@ import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, se
 
 export default class FirebaseUserService {
 
+    static sendEmail = (auth, callback) => {
+        sendEmailVerification(auth.currentUser)
+            .then(
+                () => {
+                    callback(true)
+                }
+            )
+            .catch(
+                (error) => {
+                    console.log(error)
+                    callback(false, error.code)
+                }
+            )
+    }
+
     static signup = (auth, login, password, callback) => {
         createUserWithEmailAndPassword(
             auth, login, password

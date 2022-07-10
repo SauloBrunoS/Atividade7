@@ -19,7 +19,7 @@ const StudentTableRow = (props) => {
                 props.firestore,
                 ()=>{
                     setLoading(false)
-                    props.setToast({ header: 'Sucesso!', body: 'Estudante ' + _id + ' apagado com sucesso!' })
+                    props.setToast({ header: 'Sucesso!', body: 'Estudante ' + _id + ' apagado com sucesso!', bg:'success'})
                     props.setShowToast(true)
                 },
                 _id

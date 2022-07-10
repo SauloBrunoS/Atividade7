@@ -12,7 +12,9 @@ const EditStudentPage = ({ setShowToast, setToast }) =>
         {
             (firebase) => {
                 return (
-                    <RestrictPage isLogged={firebase.getUser() != null} isVerified = {firebase.getUser() != null && firebase.getUser().emailVerified != false}>
+                    <RestrictPage   isLogged={firebase.getUser()!=null}
+                    isEmailVerified={(firebase.getUser() != null)?firebase.getUser().emailVerified:false}
+                    auth={firebase.getAuthentication()}>
                         <EditStudent
                             firebase={firebase}
                             setShowToast={setShowToast}
@@ -72,7 +74,7 @@ function EditStudent(props) {
         setValidate({ name: '', course: '', ira: '' })
 
         if (name === '' || course === '' || ira === '') {
-            props.setToast({ header: 'Erro!', body: 'Preencha todos os campos.' })
+            props.setToast({ header: 'Atenção!', body: 'Preencha todos os campos.', bg:'warning'})
             props.setShowToast(true)
             setLoading(false)
             res = false
@@ -85,7 +87,7 @@ function EditStudent(props) {
         }
 
         if (ira !== '' && (ira < 0 || ira > 10)) {
-            props.setToast({ header: 'Erro!', body: 'O IRA deve ser um valor entre 0 e 10!' })
+            props.setToast({ header: 'Atenção!', body: 'O campo IRA deve ser entre 0 e 10', bg:'warning'})
             props.setShowToast(true)
             setLoading(false)
             res = false
@@ -121,7 +123,7 @@ function EditStudent(props) {
         FirebaseStudentService.update(
             props.firebase.getFirestoreDb(),
             () => {
-                props.setToast({ header: 'Sucesso!', body: `Aluno ${name} editado com sucesso` })
+                props.setToast({ header: 'Sucesso!', body: `Aluno ${name} editado com sucesso`, bg:'success'})
                 props.setShowToast(true)
                 navigate("/listStudent")
             },

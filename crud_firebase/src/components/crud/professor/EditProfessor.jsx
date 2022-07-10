@@ -8,18 +8,20 @@ import RestrictPage from "../../../utils/RestrictPage";
 
 
 const EditProfessorPage = ({ setShowToast, setToast }) =>
-<FirebaseContext.Consumer>
-{(firebase) => {
-        return(
-            <RestrictPage isLogged = {firebase.getUser() != null} isVerified = {firebase.getUser() != null && firebase.getUser().emailVerified != false} >
-                <EditProfessor
-                    firebase={firebase} 
-                    setShowToast={setShowToast}
-                    setToast = {setToast} />
-            </RestrictPage>    
-        )
+    <FirebaseContext.Consumer>
+        {(firebase) => {
+            return (
+                <RestrictPage isLogged={firebase.getUser() != null}
+                    isEmailVerified={(firebase.getUser() != null) ? firebase.getUser().emailVerified : false}
+                    auth={firebase.getAuthentication()} >
+                    <EditProfessor
+                        firebase={firebase}
+                        setShowToast={setShowToast}
+                        setToast={setToast} />
+                </RestrictPage>
+            )
         }}
-</FirebaseContext.Consumer>
+    </FirebaseContext.Consumer>
 
 function EditProfessor(props) {
 
@@ -55,20 +57,20 @@ function EditProfessor(props) {
             )
         }, [params.id, props.firebase]
     )
-    
+
     const validateFields = () => {
         let res = true
-        setValidate({name:'',university:'', degree:''})
+        setValidate({ name: '', university: '', degree: '' })
 
-        if(name === '' || university === '' || degree === ''){
-            props.setToast({header:'Erro!',body:'Preencha todos os campos.'})
+        if (name === '' || university === '' || degree === '') {
+            props.setToast({ header: 'Atenção!', body: 'Preencha todos os campos.', bg:'warning'})
             props.setShowToast(true)
             setLoading(false)
             res = false
-            let validateObj = {name:'',university:'',degree:''}
-            if(name === '') validateObj.name = 'is-invalid'
-            if(university === '') validateObj.university = 'is-invalid'
-            if(degree === '') validateObj.degree = 'is-invalid'
+            let validateObj = { name: '', university: '', degree: '' }
+            if (name === '') validateObj.name = 'is-invalid'
+            if (university === '') validateObj.university = 'is-invalid'
+            if (degree === '') validateObj.degree = 'is-invalid'
             setValidate(validateObj)
         }
         return res
@@ -78,7 +80,7 @@ function EditProfessor(props) {
     const handleSubmit = (event) => {
         event.preventDefault()
         setLoading(true)
-        if(!validateFields()) return
+        if (!validateFields()) return
         const updatedProfessor = { name, university, degree }
         /*
         axios.put(`http://localhost:3002/crud/professors/update/`+ params.id, updatedProfessor)
@@ -90,7 +92,7 @@ function EditProfessor(props) {
         FirebaseProfessorService.update(
             props.firebase.getFirestoreDb(),
             () => {
-                props.setToast({ header: 'Sucesso!', body: `Professor ${name} editado com sucesso` })
+                props.setToast({ header: 'Sucesso!', body: `Professor ${name} editado com sucesso`, bg:'success'})
                 props.setShowToast(true)
                 navigate("/listProfessor")
             },

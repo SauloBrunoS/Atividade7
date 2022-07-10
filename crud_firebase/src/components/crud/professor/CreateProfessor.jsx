@@ -9,7 +9,9 @@ const CreateProfessorPage = ({setShowToast,setToast}) =>
 <FirebaseContext.Consumer>
 {(firebase) => {
         return(
-            <RestrictPage isLogged = {firebase.getUser() != null} isVerified = {firebase.getUser() != null && firebase.getUser().emailVerified != false} >
+            <RestrictPage  isLogged={firebase.getUser()!=null}
+            isEmailVerified={(firebase.getUser() != null)?firebase.getUser().emailVerified:false}
+            auth={firebase.getAuthentication()}>
                 <CreateProfessor
                     firebase={firebase} 
                     setShowToast={setShowToast}
@@ -33,7 +35,7 @@ function CreateProfessor(props){
         setValidate({name:'',university:'', degree:''})
 
         if(name === '' || university === '' || degree === ''){
-            props.setToast({header:'Erro!',body:'Preencha todos os campos.'})
+            props.setToast({header:'Atenção!',body:'Preencha todos os campos.', bg:'warning'})
             props.setShowToast(true)
             setLoading(false)
             res = false
@@ -63,7 +65,7 @@ function CreateProfessor(props){
         FirebaseProfessorService.create(
             props.firebase.getFirestoreDb(),
             () => {
-                props.setToast({header:'Sucesso!',body:`Professor ${name} criado com sucesso.`})
+                props.setToast({header:'Sucesso!',body:`Professor ${name} criado com sucesso.`, bg:'success'})
                 props.setShowToast(true)
                 setLoading(false)       
                 navigate("/listProfessor")

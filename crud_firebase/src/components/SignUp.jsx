@@ -31,7 +31,7 @@ function SignUp(props) {
         setValidate({login:'',password:'',repassword:''})
         
         if(password!==repassword){
-            props.setToast({header:'Erro!',body:'Repita a mesmo senha!'})
+            props.setToast({header:'Erro!',body:'Repita a mesmo senha!', bg:'warning'})
             props.setShowToast(true)
             setLoading(false)
             setValidate({login:'',password:'is-invalid',repassword:'is-invalid'})
@@ -39,7 +39,7 @@ function SignUp(props) {
         }
 
         if(login === '' || password === '' || repassword === ''){
-            props.setToast({header:'Erro!',body:'Preencha todos os campos.'})
+            props.setToast({header:'Atenção!',body:'Preencha todos os campos.', bg:'danger'})
             props.setShowToast(true)
             setLoading(false)
             res = false
@@ -50,7 +50,6 @@ function SignUp(props) {
             setValidate(validateObj)
         }
 
-         
         return res
     }
 
@@ -67,12 +66,14 @@ function SignUp(props) {
                     //console.log(user.email)
                     setLoading(false)
                     props.firebase.setUser(content)
-                    props.setToast({header:'Cadastrado com sucesso!',body:'Verifique seu email'})
+                    props.setToast({header:'Sucesso!',body:`Usuário ${content.email} cadastrado com sucesso!`,bg:'success'})
                     props.setShowToast(true)
                     props.setLogged(true)
+                    navigate('/listStudent')
+
                 } else {
                     //alert('Usuário e/ou senha incorretos!')
-                    props.setToast({header:'Erro!',body:content})
+                    props.setToast({header:'Erro!',body:content, bg:'danger'})
                     props.setShowToast(true)
                     setLoading(false)
                 }
